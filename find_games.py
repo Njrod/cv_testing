@@ -27,16 +27,17 @@ while True:
     lower = np.array([0, 0, 200])
     mask = cv2.inRange(image, lower, upper)
 
-    # find contours in the masked image and keep the largest one
+    # find contours in the masked image ##and keep the largest one
     (_, cnts, _) = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    c = max(cnts, key=cv2.contourArea)
-
-    # approximate the contour
-    peri = cv2.arcLength(c, True)
-    approx = cv2.approxPolyDP(c, 0.05 * peri, True)
 
     # draw a green bounding box surrounding the red game
-    cv2.drawContours(image, [approx], -1, (0, 255, 0), 4)
+    for c in cnts:
+        # approximate the contour
+        print(c)
+        peri = cv2.arcLength(c, True)
+        approx = cv2.approxPolyDP(c, 0.05 * peri, True)
+        cv2.drawContours(image, [approx], -1, (0, 255, 0), 3)
+
     cv2.imshow("Image", image)
     cv2.imshow("Mask", mask)
 
